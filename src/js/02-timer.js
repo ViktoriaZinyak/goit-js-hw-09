@@ -8,12 +8,12 @@ const daysEl = document.querySelector('span[data-days]');
 const hoursEl = document.querySelector('span[data-hours]');
 const minutesEl = document.querySelector('span[data-minutes]');
 const secondsEl = document.querySelector('span[data-seconds]');
-const date = new Date();
-let deltaTime = 0;
+
+let timerId = null;
+let futureDate = 0;
 const PROMPT_DELAY = 1000;
 
 button.disabled = true;
-button.addEventListener('click', onBtnStart);
 
 const options = {
   enableTime: true,
@@ -24,7 +24,7 @@ const options = {
   //     console.log(selectedDates[0]);
   //   },
   onClose(selectedDates) {
-    if (selectedDates[0] < date) {
+    if (selectedDates[0] < new Date()) {
       Notiflix.Notify.failure('Please choose a date in the future');
     } else {
       button.disabled = false;
@@ -34,24 +34,24 @@ const options = {
 
 flatpickr(selector, options);
 
-// console.log(new Date(selector.value));
+button.addEventListener('click', onBtnStart);
 
 function onBtnStart() {
-  timerId = setInterval(() => {
-    const futureDate = new Date(selector.value);
-    const date = new Date();
-    deltaTime = convertMs(futureDate.getTime() - date.getTime());
-    if (futureDate.getTime() - date.getTime() <= 1000) {
-      clearInterval(timerId);
-      button.disabled = true;
-    }
+  futureDate = new Date(selector.value);
+  button.disabled = true;
 
-    console.log(deltaTime);
+  timerId = setInterval(() => {
+    const date = new Date();
+    let deltaTime = convertMs(futureDate.getTime() - date.getTime());
     const { days, hours, minutes, seconds } = deltaTime;
     daysEl.textContent = addLeadingZero(days);
     hoursEl.textContent = addLeadingZero(hours);
     secondsEl.textContent = addLeadingZero(seconds);
     minutesEl.textContent = addLeadingZero(minutes);
+    if (futureDate.getTime() - date.getTime() <= 1000) {
+      clearInterval(timerId);
+      button.disabled = false;
+    }
   }, PROMPT_DELAY);
 }
 
