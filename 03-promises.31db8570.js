@@ -1,0 +1,2 @@
+!function(){var o,n;console.log("✅ Fulfilled promise in ms"),(o=2,n=1500,new Promise((function(c,e){var i=Math.random()>.3;setTimeout((function(){i?c("✅ Fulfilled promise ".concat(o," in ").concat(n,"ms")):e("❌ Rejected promise ".concat(o," in ").concat(n,"ms"))}),n)}))).then((function(o){var n=o.position,c=o.delay;console.log("✅ Fulfilled promise ".concat(n," in ").concat(c,"ms"))})).catch((function(o){var n=o.position,c=o.delay;console.log("❌ Rejected promise ".concat(n," in ").concat(c,"ms"))}))}();
+//# sourceMappingURL=03-promises.31db8570.js.map
